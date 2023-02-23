@@ -1,0 +1,2 @@
+tracking_server:
+  url: http://0.0.0.0:5000

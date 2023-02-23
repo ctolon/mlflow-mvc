@@ -1,9 +1,12 @@
 """Global Config Settings Module"""
 
-from mlflow_mvc.util.const import Const
+from ..util.type_safety import Const
 
 class Config:
-  """Config for mlflow tracking server"""
+  """Config Provider Alternative Class for Mlflow Tracking Server
+
+  DEPRECATED: Use config.yml configuration instead of this  
+  """
   __conf = {
     "TRACKING_SERVER_URI": "http://0.0.0.0:5000",
   }
@@ -22,5 +25,5 @@ class Config:
 
     
 class ApiPath(Const):
-  """End-points RestAPI Routing"""
+  """RestAPI End-points in Mlflow Core Framework"""
   GET_ARTIFACT_PATH = "/get-artifact"

@@ -1,20 +1,22 @@
+"""mlflow-mvc Standard Logging Module For Mostly Service Layer"""
+
 import logging
 from logging import RootLogger
-from mlflow_mvc.util.decorators import setterOnly
+from mlflow_mvc.util.decorators import setter_onlyf
 
 class MasterLogger(object):
-    """Main class for logging"""
+    """Main class for logging mlflow-mvc as standard"""
 
     def __init__(self):
         self._logger = logging.getLogger("crumbs")
         self._datefmt = "%d-%m-%y, %H:%M:%S"
         self._logfmt = "[%(asctime)s] {%(filename)s - L#%(lineno)d} [%(levelname)s] - %(message)s"
 
-    @setterOnly
+    @setter_onlyf
     def set_datemt(self, value):
         self._datefmt = value
 
-    @setterOnly
+    @setter_onlyf
     def set_logfmt(self, value):
         self._logfmt = value
 
@@ -22,6 +24,3 @@ class MasterLogger(object):
     def get_logger(self) -> RootLogger:
         logging.basicConfig(format=self._logfmt, level="INFO", datefmt=self._datefmt)
         return self._logger
-
-# usage ex for singleton logger:    
-# logger = MasterLogger.get_logger

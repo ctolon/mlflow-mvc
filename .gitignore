@@ -178,10 +178,6 @@ poetry.toml
 /exports/
 data
 .idea
-/app/config.ini
-/app/logs/
-/app/models/
 .vscode
 .metals
-/backup-dag
 
