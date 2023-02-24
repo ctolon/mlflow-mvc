@@ -2,13 +2,13 @@
 
 from dependency_injector import containers, providers
 
-from ._repository_container import ExperimentRepositoryContainer, ModelVersionRepositoryContainer, \
+from .repository_container import ExperimentRepositoryContainer, ModelVersionRepositoryContainer, \
     RegisteredModelRepositoryContainer, RunRepositoryContainer
 
-from ..service._experiment_service import ExperimentService
-from ..service._model_version_service import ModelVersionService
-from ..service._registered_model_service import RegisteredModelService
-from ..service._run_service import RunService
+from ..service.experiment_service import ExperimentService
+from ..service.model_version_service import ModelVersionService
+from ..service.registered_model_service import RegisteredModelService
+from ..service.run_service import RunService
 
 
 class ExperimentServiceContainer(containers.DeclarativeContainer):

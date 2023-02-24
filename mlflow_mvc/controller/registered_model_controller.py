@@ -2,7 +2,7 @@
 
 from typing import List
 
-from ..service import RegisteredModelService
+from ..service.registered_model_service import RegisteredModelService
 
 
 class RegisteredModelController(object):

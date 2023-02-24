@@ -5,13 +5,14 @@ from pathlib import Path
 from typing import List
 import requests
 from mlflow.store.entities.paged_list import PagedList
+from mlflow.entities.metric import Metric
 from interface import implements
 
-from .interface._i_model_version_service import IModelVersionService
-from ..config._core import Config, ApiPath
-from ..entities._run_data_entity import RunDataEntity
-from ..repository._model_version_repository import ModelVersionRepository
-from ..repository._run_repository import RunRepository
+from .interface.i_model_version_service import IModelVersionService
+from ..config.core import Config, ApiPath
+from ..entities.run_data_entity import RunDataEntity
+from ..repository.model_version_repository import ModelVersionRepository
+from ..repository.run_repository import RunRepository
 from ..util.master_logger import MasterLogger
 
 # Global logger settings
@@ -34,11 +35,14 @@ class ModelVersionService(implements(IModelVersionService)):
             model_format (str, optional): Model format. Defaults to ".bin".
         """
 
+        if model_format.startswith(".") is False:
+            raise TypeError("Model Format parameter must be started with .")
+
         logger.info(Path(__file__).name + " execution start..")
 
         # Fetch latest model
         logger.info("latest model is fetching now..")
-        latest_model_version = self._model_version_repository.find_latest_model_version_version_by_model_name(
+        latest_model_version = self._model_version_repository.find_latest_model_version_by_model_name(
             model_name)
         run_uuid = latest_model_version.run_id
         model_version = latest_model_version.version
@@ -54,27 +58,27 @@ class ModelVersionService(implements(IModelVersionService)):
         model_uri = run_data_model.get_model_uri
         print(run_data_model.get_flavors)
 
-        PATH_TO_DOWNLOAD = f"{model_uri}/{model_path}"
-        logger.info(f"Path to download: {PATH_TO_DOWNLOAD}")
+        path_to_download = f"{model_uri}/{model_path}"
+        logger.info(f"Path to download: {path_to_download}")
 
-        OUTPUT_DIR = pathlib.Path(__file__).resolve().parent  # Current path
-        logger.info(f"Output Directory : {OUTPUT_DIR}")
+        output_dir = pathlib.Path(__file__).resolve().parent  # Current path
+        logger.info(f"Output Directory : {output_dir}")
 
         tracking_server_url = Config.get("TRACKING_SERVER_URI")
 
-        BASE_URL = f"{tracking_server_url}{ApiPath.GET_ARTIFACT_PATH}"
+        base_url = f"{tracking_server_url}{ApiPath.GET_ARTIFACT_PATH}"
 
         # Send HTTP Params as JSON
         params = {
-            "path": PATH_TO_DOWNLOAD,
+            "path": path_to_download,
             "run_uuid": run_uuid
         }
 
         logger.info(
-            f"GET Request to -> {BASE_URL}?path={PATH_TO_DOWNLOAD}&run_uuid={run_uuid}, params: {params.items()}")
+            f"GET Request to -> {base_url}?path={path_to_download}&run_uuid={run_uuid}, params: {params.items()}")
 
         # Send GET Request and retrieve model from MLflow Artifact server
-        r = requests.get(url=BASE_URL, params=params)
+        r = requests.get(url=base_url, params=params)
         open(f'{model_name}{model_format}', 'wb').write(r.content)
 
         logger.info(f"{model_name} download success!")
@@ -107,7 +111,8 @@ class ModelVersionService(implements(IModelVersionService)):
         # logger.info(f"Registered Model Source: {latest_model_version.source}")
 
         # Get Model Metrics for latest run with transformers due to datatype issues
-        model_metric: PagedList = self._run_repository.get_metric_history(latest_model_version.run_id, selected_metric)
+        model_metric: List[Metric] = self._run_repository.get_metric_history(latest_model_version.run_id,
+                                                                             selected_metric)
 
         metric_dict = dict((x, y) for x, y in tuple(model_metric[0]))
         metric_key, metric_value = metric_dict["key"], metric_dict["value"]

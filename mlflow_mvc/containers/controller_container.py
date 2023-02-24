@@ -1,12 +1,12 @@
 from dependency_injector import containers, providers
 
-from ._service_container import ExperimentServiceContainer, ModelVersionServiceContainer, \
+from .service_container import ExperimentServiceContainer, ModelVersionServiceContainer, \
     RegisteredModelServiceContainer, RunServiceContainer
 
-from ..controller._experiment_controller import ExperimentController
-from ..controller._model_version_controller import ModelVersionController
-from ..controller._registered_model_controller import RegisteredModelController
-from ..controller._run_controller import RunController
+from ..controller.experiment_controller import ExperimentController
+from ..controller.model_version_controller import ModelVersionController
+from ..controller.registered_model_controller import RegisteredModelController
+from ..controller.run_controller import RunController
 
 
 class ExperimentControllerContainer(containers.DeclarativeContainer):

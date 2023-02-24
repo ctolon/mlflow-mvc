@@ -34,3 +34,9 @@ class ExperimentRepository(MlflowClient):
         all_experiments = self.find_all_experiments_as_paged_list()
         all_experiment_names = [x.name for x in all_experiments]
         return all_experiment_names
+
+    def find_experiment_by_id(self, experiment_id: str) -> Experiment:
+        return self.get_experiment(experiment_id)
+
+    def find_experiment_by_name(self, name: str) -> Experiment:
+        return self.get_experiment_by_name(name=name)

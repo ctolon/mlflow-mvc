@@ -7,11 +7,11 @@ from mlflow.entities.run import Run
 from mlflow.store.entities import PagedList
 from interface import implements
 
-from .interface._i_run_service import IRunService
-from ..repository._experiment_repository import ExperimentRepository
-from ..repository._run_repository import RunRepository
-from ..entities._run_data_entity import RunDataEntity
-from ..entities._run_info_entity import RunInfoEntity
+from .interface.i_run_service import IRunService
+from ..repository.experiment_repository import ExperimentRepository
+from ..repository.run_repository import RunRepository
+from ..entities.run_data_entity import RunDataEntity
+from ..entities.run_info_entity import RunInfoEntity
 from ..util.master_logger import MasterLogger
 
 # Global logger settings

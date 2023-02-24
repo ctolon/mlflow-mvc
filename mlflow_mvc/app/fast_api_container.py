@@ -1,12 +1,7 @@
 """FastAPI Container Module"""
 
+from mlflow_mvc.containers.controller_container import ControllersContainer
 from dependency_injector import containers, providers
-import sys
-import os
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-from mlflow_mvc.containers._controller_container import ControllersContainer
 
 
 class FastAPIContainer(containers.DeclarativeContainer):
@@ -19,10 +14,10 @@ class FastAPIContainer(containers.DeclarativeContainer):
 
     # Endpoint path of modules
     MODULES = [
-        "app._experiment_endpoint",
-        "app._model_version_endpoint",
-        "app._run_endpoint",
-        "app._registered_model_endpoint"
+        ".experiment_endpoint",
+        ".model_version_endpoint",
+        ".run_endpoint",
+        ".registered_model_endpoint"
     ]
 
     # Wiring Dependencies

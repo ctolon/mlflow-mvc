@@ -1,12 +1,12 @@
 import pytest
 
-from mlflow_mvc.containers._controller_container import ControllersContainer
-from mlflow_mvc.containers._repository_container import RepositoriesContainer
-from mlflow_mvc.entities._run_data_entity import RunDataEntity
-from mlflow_mvc.entities._run_info_entity import RunInfoEntity
-from mlflow_mvc.entities._experiment_entity import ExperimentEntity
-from mlflow_mvc.entities._model_version_entity import ModelVersionEntity
-from mlflow_mvc.entities._registered_model_entity import RegisteredModel
+from mlflow_mvc.containers.controller_container import ControllersContainer
+from mlflow_mvc.containers.repository_container import RepositoriesContainer
+from mlflow_mvc.entities.run_data_entity import RunDataEntity
+from mlflow_mvc.entities.run_info_entity import RunInfoEntity
+from mlflow_mvc.entities.experiment_entity import ExperimentEntity
+from mlflow_mvc.entities.model_version_entity import ModelVersionEntity
+from mlflow_mvc.entities.registered_model_entity import RegisteredModel
 
 
 def test_latest_model_validation():

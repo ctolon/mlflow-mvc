@@ -28,3 +28,6 @@ class ModelVersionRepository(MlflowClient):
     def find_all_model_versions_by_name(self, model_name: str) -> List[dict]:
         all_models_versions = self.search_model_versions(filter_string="name = " + model_name)
         return generic_multi_transformer(all_models_versions)
+
+    def find_model_version_by_name_and_version(self, name: str, version: str) -> ModelVersion:
+        return self.get_model_version(name, version)

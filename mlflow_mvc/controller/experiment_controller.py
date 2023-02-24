@@ -3,7 +3,7 @@
 from dependency_injector.wiring import inject, Provide
 from typing import List
 
-from ..service._experiment_service import ExperimentService
+from ..service.experiment_service import ExperimentService
 
 
 class ExperimentController(object):

@@ -3,7 +3,7 @@
 from typing import List
 from interface import implements
 
-from .interface._i_registered_model_service import IRegisteredModelService
+from .interface.i_registered_model_service import IRegisteredModelService
 from ..repository import RegisteredModelRepository
 from ..util.master_logger import MasterLogger
 

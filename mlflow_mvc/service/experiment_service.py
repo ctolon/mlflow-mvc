@@ -3,8 +3,8 @@
 from typing import Optional, List
 from interface import implements
 
-from .interface._i_experiment_service import IExperimentService
-from ..repository._experiment_repository import ExperimentRepository
+from .interface.i_experiment_service import IExperimentService
+from ..repository.experiment_repository import ExperimentRepository
 from ..util.master_logger import MasterLogger
 from ..util.performance_analyze import timeit
 

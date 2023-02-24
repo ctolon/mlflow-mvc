@@ -2,10 +2,10 @@
 
 from dependency_injector import containers, providers
 
-from ..repository._experiment_repository import ExperimentRepository
-from ..repository._model_version_repository import ModelVersionRepository
-from ..repository._registered_model_repository import RegisteredModelRepository
-from ..repository._run_repository import RunRepository
+from ..repository.experiment_repository import ExperimentRepository
+from ..repository.model_version_repository import ModelVersionRepository
+from ..repository.registered_model_repository import RegisteredModelRepository
+from ..repository.run_repository import RunRepository
 
 
 class ExperimentRepositoryContainer(containers.DeclarativeContainer):

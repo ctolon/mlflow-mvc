@@ -3,7 +3,7 @@
 from typing import Optional
 from dependency_injector.wiring import Provide, inject
 
-from ..service._run_service import RunService
+from ..service.run_service import RunService
 
 
 class RunController(object):
