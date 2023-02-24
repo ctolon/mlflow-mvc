@@ -1,6 +1,5 @@
 """Top Level Package"""
 
-
 __all__ = [
     "app",
     "cli",

@@ -6,6 +6,7 @@ from interface import implements
 from .interface.i_registered_model_service import IRegisteredModelService
 from ..repository import RegisteredModelRepository
 from ..util.master_logger import MasterLogger
+from dependency_injector.wiring import inject
 
 # Global logger settings
 logger = MasterLogger().get_logger
@@ -14,6 +15,7 @@ logger = MasterLogger().get_logger
 class RegisteredModelService(implements(IRegisteredModelService)):
     """Mlflow MVC Registered Models Service Implementation"""
 
+    @inject
     def __init__(self, registered_models_repository: RegisteredModelRepository):
         self._registered_models_repository = registered_models_repository
 

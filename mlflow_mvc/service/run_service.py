@@ -6,6 +6,7 @@ from mlflow.entities import ViewType
 from mlflow.entities.run import Run
 from mlflow.store.entities import PagedList
 from interface import implements
+from dependency_injector.wiring import inject
 
 from .interface.i_run_service import IRunService
 from ..repository.experiment_repository import ExperimentRepository
@@ -21,6 +22,7 @@ logger = MasterLogger().get_logger
 class RunService(implements(IRunService)):
     """Mlflow MVC Run.data - Run.info Service Implementation"""
 
+    @inject
     def __init__(
             self, run_repository: RunRepository, experiment_repository: ExperimentRepository
     ):

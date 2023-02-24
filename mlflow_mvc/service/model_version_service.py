@@ -7,6 +7,7 @@ import requests
 from mlflow.store.entities.paged_list import PagedList
 from mlflow.entities.metric import Metric
 from interface import implements
+from dependency_injector.wiring import inject
 
 from .interface.i_model_version_service import IModelVersionService
 from ..config.core import Config, ApiPath
@@ -22,6 +23,7 @@ logger = MasterLogger().get_logger
 class ModelVersionService(implements(IModelVersionService)):
     """Mlflow MVC Model Version Service Implementation"""
 
+    @inject
     def __init__(self, run_repository: RunRepository, model_version_repository: ModelVersionRepository):
         self._run_repository = run_repository
         self._model_version_repository = model_version_repository

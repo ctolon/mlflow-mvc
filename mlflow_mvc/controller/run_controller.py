@@ -9,6 +9,7 @@ from ..service.run_service import RunService
 class RunController(object):
     """Mlflow MVC Run Controller Implementation"""
 
+    @inject
     def __init__(self, run_service: RunService):
         self._run_service = run_service
 

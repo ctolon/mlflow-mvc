@@ -1,6 +1,7 @@
 "Mlflow MVC Model Version Repository Module"
 
 from typing import List
+from dependency_injector.wiring import inject
 
 import mlflow
 from mlflow.entities.model_registry.model_version import ModelVersion
@@ -12,6 +13,7 @@ from ..util.generic_transformers import generic_multi_transformer
 class ModelVersionRepository(MlflowClient):
     """Mlflow MVC Repository for Model Version Entity"""
 
+    @inject
     def __init__(self, tracking_server_url: str, *args, **kwargs):
         mlflow.tracking.set_tracking_uri(tracking_server_url)
         super().__init__()

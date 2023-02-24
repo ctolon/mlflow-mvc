@@ -1,6 +1,7 @@
 "Mlflow MVC Run Repository Module"
 
 from typing import List
+from dependency_injector.wiring import inject
 import mlflow
 from mlflow.entities.metric import Metric
 from mlflow.entities.run import Run
@@ -13,6 +14,7 @@ from ..util.generic_transformers import generic_multi_transformer
 class RunRepository(MlflowClient):
     """Mlflow MVC Repository for Run.Data - Run.info Entity"""
 
+    @inject
     def __init__(self, tracking_server_url: str, *args, **kwargs):
         mlflow.tracking.set_tracking_uri(tracking_server_url)
         super().__init__()

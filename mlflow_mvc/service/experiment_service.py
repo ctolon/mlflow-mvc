@@ -2,6 +2,7 @@
 
 from typing import Optional, List
 from interface import implements
+from dependency_injector.wiring import inject
 
 from .interface.i_experiment_service import IExperimentService
 from ..repository.experiment_repository import ExperimentRepository
@@ -15,6 +16,7 @@ logger = MasterLogger().get_logger
 class ExperimentService(implements(IExperimentService)):
     """Mlflow MVC Experiment Service Implementation"""
 
+    @inject
     def __init__(self, experiment_repository: ExperimentRepository):
         self._experiment_repository = experiment_repository
 

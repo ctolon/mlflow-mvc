@@ -1,13 +1,16 @@
 """Global Config Settings Module"""
 
 from ..util.type_safety import Const
+import os
 
 
 class Config:
     """Config Provider Alternative Class for Mlflow Tracking Server
-
-    DEPRECATED: Use config.yml configuration instead of this
     """
+
+    BASE_CONFIG_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/application_properties.yml"
+
+    # DEPRECATED: Use BASE_CONFIG_DIR Instead of this
     __conf = {
         "TRACKING_SERVER_URI": "http://0.0.0.0:5000",
     }
@@ -27,4 +30,5 @@ class Config:
 
 class ApiPath(Const):
     """RestAPI End-points in Mlflow Core Framework"""
+
     GET_ARTIFACT_PATH = "/get-artifact"

@@ -8,10 +8,15 @@ from setuptools import find_packages, setup
 # Package meta-data.
 NAME = 'mlflow-mvc'
 DESCRIPTION = "mlflow-mvc package"
-#URL = "https://github.com/ctolon/mlflow-mvc"
+URL = "https://github.com/ctolon/mlflow-mvc"
 EMAIL = "cevat.batuhan.tolon@cern.ch"
 AUTHOR = "Cevat Batuhan Tolon"
 REQUIRES_PYTHON = ">=3.6.8"
+
+TOP_LEVEL_NON_PY_FILES = [
+    "VERSION", # Version File
+    "application_properties.yml" # Main Application Properties
+]
 
 long_description = DESCRIPTION
 
@@ -40,10 +45,10 @@ setup(
     author=AUTHOR,
     author_email=EMAIL,
     python_requires=REQUIRES_PYTHON,
-    #url=URL,
+    url=URL,
     packages=find_packages(exclude=("tests",)),
-    package_data={"mlflow_mvc": ["VERSION"]},
-    package_dir={"mlflow_mvc":"mlflow_mvc"},
+    package_data={"mlflow_mvc": TOP_LEVEL_NON_PY_FILES},
+    package_dir={"mlflow_mvc": "mlflow_mvc"},
     install_requires=list_reqs(),
     extras_require={},
     include_package_data=True,

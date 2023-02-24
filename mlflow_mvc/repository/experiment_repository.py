@@ -1,7 +1,7 @@
 "Mlflow MVC Experiment Repository Module"
 
 from typing import Optional, List
-
+from dependency_injector.wiring import inject
 import mlflow
 from mlflow.entities.experiment import Experiment
 from mlflow.entities.view_type import ViewType
@@ -14,6 +14,7 @@ from ..util.generic_transformers import generic_multi_transformer
 class ExperimentRepository(MlflowClient):
     """Mlflow MVC Repository for Experiment Entity"""
 
+    @inject
     def __init__(self, tracking_server_url: str, *args, **kwargs):
         mlflow.tracking.set_tracking_uri(tracking_server_url)
         super().__init__()
