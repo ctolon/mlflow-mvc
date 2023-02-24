@@ -4,11 +4,11 @@ from ..repository.run_repository import RunRepository
 from ..repository.model_version_repository import ModelVersionRepository
 from ..service.model_version_service import ModelVersionService
 from ..controller.model_version_controller import ModelVersionController
+from ..config.core import Config
 
 
 class ModelVersionContainer(containers.DeclarativeContainer):
-
-    config = providers.Configuration(yaml_files=["config.yml"])
+    config = providers.Configuration(Config.BASE_CONFIG_DIR)
 
     model_version_repository = providers.Singleton(
         ModelVersionRepository,

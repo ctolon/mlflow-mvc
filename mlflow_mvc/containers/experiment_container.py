@@ -3,11 +3,11 @@ from dependency_injector import containers, providers
 from ..repository.experiment_repository import ExperimentRepository
 from ..service.experiment_service import ExperimentService
 from ..controller.experiment_controller import ExperimentController
+from ..config.core import Config
 
 
 class ExperimentContainer(containers.DeclarativeContainer):
-    # Injection Config
-    config = providers.Configuration(yaml_files=["config.yml"])
+    config = providers.Configuration(Config.BASE_CONFIG_DIR)
 
     experiment_repository = providers.Singleton(
         ExperimentRepository,

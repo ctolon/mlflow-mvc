@@ -4,11 +4,11 @@ from ..repository.run_repository import RunRepository
 from ..repository.experiment_repository import ExperimentRepository
 from ..service.run_service import RunService
 from ..controller.run_controller import RunController
+from ..config.core import Config
 
 
 class RunContainer(containers.DeclarativeContainer):
-
-    config = providers.Configuration(yaml_files=["config.yml"])
+    config = providers.Configuration(Config.BASE_CONFIG_DIR)
 
     run_repository = providers.Singleton(
         RunRepository,

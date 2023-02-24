@@ -1,5 +1,7 @@
 """Top Level Package"""
 
+from . import routes
+
 __all__ = [
     "app",
     "cli",
@@ -7,5 +9,7 @@ __all__ = [
     "containers",
     "controller",
     "entities",
-    "repository"
+    "repository",
+    "service",
+    "routes"
 ]
