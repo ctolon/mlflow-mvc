@@ -10,7 +10,6 @@ class RegisteredModelController(object):
 
     def __init__(self, registered_model_service: RegisteredModelService):
         self._registered_model_service = registered_model_service
-        
-        
+
     def list_all_registered_models(self) -> List[dict]:
         return self._registered_model_service.list_all_registered_models()

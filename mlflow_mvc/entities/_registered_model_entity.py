@@ -5,7 +5,6 @@ from mlflow.entities.model_registry.model_version import ModelVersion
 from typing import List
 import json
 
-
 from ..util.type_safety import strict_prop_return, entity_type_check
 
 
@@ -49,15 +48,15 @@ class RegisteredModelEntity(object):
         if self._strict_return:
             return strict_prop_return(prop, str)
         return prop
-    
+
     @property
-    def get_latest_versions(self) -> List[ModelVersion]: # Can be None?
+    def get_latest_versions(self) -> List[ModelVersion]:  # Can be None?
         """List of the latest mlflow.entities.model_registry.ModelVersion instances for each stage"""
         prop = self._registered_model.latest_versions
         if self._strict_return:
             return strict_prop_return(prop, list)
         return prop
-    
+
     # Transformers
     def to_dictionary(self):
         return dict(self._registered_model)

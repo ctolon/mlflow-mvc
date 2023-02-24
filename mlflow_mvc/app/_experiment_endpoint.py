@@ -9,12 +9,14 @@ from ..util.exceptions import NotFoundError
 
 router = APIRouter()
 
+
 @router.get("/experiments")
 @inject
 def list_all_experiments(
-    experiment_controller: ExperimentController = Depends(Provide[FastAPIContainer.experiment_controller]),
+        experiment_controller: ExperimentController = Depends(Provide[FastAPIContainer.experiment_controller]),
 ):
     return experiment_controller.list_all_experiments()
+
 
 @router.get("/status")
 @inject

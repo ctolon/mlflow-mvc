@@ -12,24 +12,26 @@ from ..util.exceptions import NotFoundError
 
 router = APIRouter()
 
+
 class DownloadLatestModelBody(BaseModel):
     model_name: str
     model_path: str
     model_format: Optional[str]
-    
+
 
 @router.get("/model-versions")
 @inject
 def list_all_registered_models(
-    model_version_controller: ModelVersionController = Depends(Provide[FastAPIContainer.model_version_controller]),
+        model_version_controller: ModelVersionController = Depends(Provide[FastAPIContainer.model_version_controller]),
 ):
     return model_version_controller.list_all_model_versions()
+
 
 @router.post("/model-versions/download-latest-model")
 @inject
 def download_latest_model(
-    body: DownloadLatestModelBody,
-    model_version_controller: ModelVersionController = Depends(Provide[FastAPIContainer.model_version_controller]),
+        body: DownloadLatestModelBody,
+        model_version_controller: ModelVersionController = Depends(Provide[FastAPIContainer.model_version_controller]),
 ):
     return model_version_controller.download_latest_model(
         model_name=body.model_name,
@@ -37,10 +39,12 @@ def download_latest_model(
         model_format=body.model_format
     )
 
+
 @router.get("/status")
 @inject
 def get_status():
     return {"status": "OK"}
+
 
 """
 @router.get("/experiments")

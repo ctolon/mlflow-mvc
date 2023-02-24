@@ -38,7 +38,8 @@ class ModelVersionService(implements(IModelVersionService)):
 
         # Fetch latest model
         logger.info("latest model is fetching now..")
-        latest_model_version = self._model_version_repository.find_latest_model_version_version_by_model_name(model_name)
+        latest_model_version = self._model_version_repository.find_latest_model_version_version_by_model_name(
+            model_name)
         run_uuid = latest_model_version.run_id
         model_version = latest_model_version.version
         logger.info(f"Model run id : {run_uuid}")
@@ -75,7 +76,7 @@ class ModelVersionService(implements(IModelVersionService)):
         # Send GET Request and retrieve model from MLflow Artifact server
         r = requests.get(url=BASE_URL, params=params)
         open(f'{model_name}{model_format}', 'wb').write(r.content)
-        
+
         logger.info(f"{model_name} download success!")
 
     def latest_model_validator(self, model_name: str, criteria: str, selected_metric: str) -> bool:
@@ -127,5 +128,5 @@ class ModelVersionService(implements(IModelVersionService)):
         Returns:
             List[dict]: All Model Version entities as a dict in List.
         """
-        
+
         return self._model_version_repository.find_all_model_versions()

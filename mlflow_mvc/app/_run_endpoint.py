@@ -9,17 +9,20 @@ from ..util.exceptions import NotFoundError
 
 router = APIRouter(prefix="/api/v1")
 
+
 @router.get("/runs")
 @inject
 def get_list(
-    run_service: RunService = Depends(Provide[FastAPIContainer.run_controller]),
+        run_service: RunService = Depends(Provide[FastAPIContainer.run_controller]),
 ):
-    #return experiment_service.__name__
+    # return experiment_service.__name__
     return run_service.list_all_runs()
+
 
 @router.get("/status")
 def get_status():
     return {"status": "OK"}
+
 
 """
 @router.get("/experiments")

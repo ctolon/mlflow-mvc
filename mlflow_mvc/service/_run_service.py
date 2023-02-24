@@ -14,7 +14,6 @@ from ..entities._run_data_entity import RunDataEntity
 from ..entities._run_info_entity import RunInfoEntity
 from ..util.master_logger import MasterLogger
 
-
 # Global logger settings
 logger = MasterLogger().get_logger
 
@@ -23,16 +22,16 @@ class RunService(implements(IRunService)):
     """Mlflow MVC Run.data - Run.info Service Implementation"""
 
     def __init__(
-        self, run_repository: RunRepository, experiment_repository: ExperimentRepository
-        ):
+            self, run_repository: RunRepository, experiment_repository: ExperimentRepository
+    ):
         self._run_repository = run_repository
         self._experiment_repository = experiment_repository
-        
+
     def select_best_run_by_metric(
-        self,
-        runs: PagedList[List],
-        selected_metric: str
-        ) -> Run:
+            self,
+            runs: PagedList[List],
+            selected_metric: str
+    ) -> Run:
         """Loop over runs and selects best run based on selected metric.
 
         Args:
@@ -55,10 +54,10 @@ class RunService(implements(IRunService)):
         return best_run
 
     def get_best_run_by_all_experiments_and_selected_metric(
-        self, 
-        selected_metric: str,
-        query: Optional[str] = ""
-        ) -> Run:
+            self,
+            selected_metric: str,
+            query: Optional[str] = ""
+    ) -> Run:
         """This function Searches all of Experiments and find all ML models then decides
         to best model based on selected metric criteria.
 
@@ -104,9 +103,9 @@ class RunService(implements(IRunService)):
         return best_run
 
     def get_best_run_by_experiment_name_and_selected_metric(
-        self, experiment_name: str, selected_metric: str,
-        query: Optional[str] = ""
-        ) -> Run:
+            self, experiment_name: str, selected_metric: str,
+            query: Optional[str] = ""
+    ) -> Run:
         """This function Searches run by experiment name and find all ML models then decides
         to best model based on selected metric criteria.
 
@@ -137,7 +136,7 @@ class RunService(implements(IRunService)):
 
         # Setting the decision criteria for a best run
         runs = self._run_repository.search_runs(experiment_ids, query, ViewType.ALL)
-        
+
         # Searching throught filtered runs to identify the best_run and build the model URI to programmatically reference later
         best_run = self.select_best_run_by_metric(runs, selected_metric)
         best_run_id = best_run.info.run_id
@@ -148,11 +147,11 @@ class RunService(implements(IRunService)):
         return best_run
 
     def get_best_run_by_experiment_id_and_selected_metric(
-        self,
-        experiment_id: str,
-        selected_metric: str,
-        query: Optional[str] = ""
-        ) -> Run:
+            self,
+            experiment_id: str,
+            selected_metric: str,
+            query: Optional[str] = ""
+    ) -> Run:
         """This function Searches run by experiment id and find all ML models then decides
         to best model based on selected metric criteria.
 
@@ -167,7 +166,7 @@ class RunService(implements(IRunService)):
         Returns:
             Run: Best Run Entity.
         """
-        
+
         logger.info(Path(__file__).name + " execution start..")
 
         # Parametrizing the right experiment path using widgets
@@ -183,7 +182,7 @@ class RunService(implements(IRunService)):
 
         # Setting the decision criteria for a best run
         runs = self._run_repository.search_runs(experiment_ids, query, ViewType.ALL)
-        
+
         # Searching throught filtered runs to identify the best_run and build the model URI to programmatically reference later
         best_run = self.select_best_run_by_metric(runs, selected_metric)
         best_run_id = best_run.info.run_id

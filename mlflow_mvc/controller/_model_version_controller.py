@@ -6,7 +6,7 @@ from ..service._model_version_service import ModelVersionService
 class ModelVersionController(object):
     """Mlflow MVC Model Version Controller Implementation"""
 
-    def __init__(self,model_version_service: ModelVersionService):
+    def __init__(self, model_version_service: ModelVersionService):
         self._model_version_service = model_version_service
 
     def download_latest_model(self, model_name: str, model_path: str) -> None:

@@ -6,6 +6,7 @@ from mlflow.entities.experiment import Experiment
 
 from ..util.type_safety import strict_prop_return, entity_type_check
 
+
 class ExperimentEntity(object):
     """Mlflow MVC Entity Class for Experiment"""
 
@@ -69,7 +70,7 @@ class ExperimentEntity(object):
         if self._strict_return:
             return strict_prop_return(prop, dict)
         return prop
-    
+
     # Transformers
     def to_dictionary(self):
         return dict(self._experiment)

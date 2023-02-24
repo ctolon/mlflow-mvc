@@ -22,7 +22,7 @@ class ModelVersionEntity(object):
         if self._strict_return:
             return strict_prop_return(prop, str)
         return prop
-    
+
     @property
     def get_version(self) -> str:
         """String. Version"""
@@ -47,7 +47,7 @@ class ModelVersionEntity(object):
         if self._strict_return:
             return strict_prop_return(prop, int)
         return prop
-    
+
     @property
     def get_current_stage(self) -> str:
         """String. Current stage of this model version."""
@@ -63,7 +63,7 @@ class ModelVersionEntity(object):
         if self._strict_return:
             return strict_prop_return(prop, str)
         return prop
-    
+
     @property
     def get_source(self) -> str:
         """String. Source path of model."""
@@ -71,7 +71,7 @@ class ModelVersionEntity(object):
         if self._strict_return:
             return strict_prop_return(prop, str)
         return prop
-    
+
     @property
     def get_run_id(self) -> str:
         """String. MLflow run ID that generated this model."""
@@ -79,7 +79,7 @@ class ModelVersionEntity(object):
         if self._strict_return:
             return strict_prop_return(prop, str)
         return prop
-    
+
     @property
     def get_status(self) -> str:
         """String. MLflow run ID that generated this model."""
@@ -87,7 +87,7 @@ class ModelVersionEntity(object):
         if self._strict_return:
             return strict_prop_return(prop, str)
         return prop
-    
+
     @property
     def get_tags(self) -> dict:
         """Dictionary of tag key (string) -> tag value for the current model version."""
@@ -95,7 +95,7 @@ class ModelVersionEntity(object):
         if self._strict_return:
             return strict_prop_return(prop, dict)
         return prop
-    
+
     @property
     def get_run_link(self) -> str:
         """String. MLflow run link referring to the exact run that generated this model version."""

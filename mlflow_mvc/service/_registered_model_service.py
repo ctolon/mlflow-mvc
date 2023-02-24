@@ -14,8 +14,7 @@ logger = MasterLogger().get_logger
 class RegisteredModelService(implements(IRegisteredModelService)):
     """Mlflow MVC Registered Models Service Implementation"""
 
-    def __init__(self, registered_models_repository :RegisteredModelRepository):
-
+    def __init__(self, registered_models_repository: RegisteredModelRepository):
         self._registered_models_repository = registered_models_repository
 
     def list_all_registered_models(self) -> List[dict]:

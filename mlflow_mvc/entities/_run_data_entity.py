@@ -6,9 +6,10 @@ from typing import Optional
 
 from ..util.type_safety import strict_prop_return, entity_type_check
 
+
 class RunDataEntity(object):
     """Mlflow MVC Entity Class for Run.data"""
-    
+
     def __init__(self, run: Run, path_name: Optional[str] = None, strict_return: bool = True):
         entity_type_check(run, Run)
         self._run = dict(run.data)
@@ -20,7 +21,7 @@ class RunDataEntity(object):
     def get_run(self):
         """Dictionary. Processable run entity."""
         return self._run
-        
+
     @property
     def get_metrics(self) -> dict:
         """Dictionary of string key -> metric value for the current run.
@@ -30,7 +31,7 @@ class RunDataEntity(object):
         if self._strict_return:
             return strict_prop_return(prop, dict)
         return prop
-    
+
     @property
     def get_params(self) -> dict:
         """Dictionary of param key (string) -> param value for the current run."""
@@ -38,7 +39,7 @@ class RunDataEntity(object):
         if self._strict_return:
             return strict_prop_return(prop, dict)
         return prop
-    
+
     @property
     def get_run_tags(self) -> dict:
         """Dictionary of tag key (string) -> tag value for the current run."""
@@ -46,7 +47,7 @@ class RunDataEntity(object):
         if self._strict_return:
             return strict_prop_return(prop, dict)
         return prop
-    
+
     @property
     def get_source_name(self) -> str:
         """URI indicating the location of the model artifacts"""
@@ -54,7 +55,7 @@ class RunDataEntity(object):
         if self._strict_return:
             return strict_prop_return(prop, str)
         return prop
-    
+
     @property
     def get_source_type(self) -> str:
         """String. URI indicating the location of the model artifacts."""
@@ -62,7 +63,7 @@ class RunDataEntity(object):
         if self._strict_return:
             return strict_prop_return(prop, str)
         return prop
-    
+
     @property
     def get_git_commit(self) -> str:
         """String. Latest git commit of run."""
@@ -70,12 +71,12 @@ class RunDataEntity(object):
         if self._strict_return:
             return strict_prop_return(prop, str)
         return prop
-    
+
     # TODO for specific tags as a list, write queries
-    #@property
-    #def getModelSpecificTag(self):
-        #return self.get_run_tags.get("runtag")
-    
+    # @property
+    # def getModelSpecificTag(self):
+    # return self.get_run_tags.get("runtag")
+
     @property
     def get_description(self) -> str:
         """String. Optional description for run."""
@@ -83,7 +84,7 @@ class RunDataEntity(object):
         if self._strict_return:
             return strict_prop_return(prop, str)
         return prop
-    
+
     @property
     def get_project_env(self) -> str:
         """String. Project environment of run."""
@@ -91,7 +92,7 @@ class RunDataEntity(object):
         if self._strict_return:
             return strict_prop_return(prop, str)
         return prop
-    
+
     @property
     def get_run_name(self) -> str:
         """String. Name of the run."""
@@ -100,7 +101,6 @@ class RunDataEntity(object):
             return strict_prop_return(prop, str)
         return prop
 
-        
     @property
     def get_model_log_history(self) -> dict:
         """Dictionary. Model log history."""
@@ -108,7 +108,7 @@ class RunDataEntity(object):
         if self._strict_return:
             return strict_prop_return(prop, dict)
         return prop
-    
+
     @property
     def get_run_id(self) -> str:
         """String. ID of the run to restore."""
@@ -124,7 +124,7 @@ class RunDataEntity(object):
         if self._strict_return:
             return strict_prop_return(prop, str)
         return prop
-    
+
     @property
     def get_utc_time_created(self) -> str:
         """String. Creation time in UTC of run."""
@@ -132,7 +132,7 @@ class RunDataEntity(object):
         if self._strict_return:
             return strict_prop_return(prop, str)
         return prop
-    
+
     @property
     def get_flavors(self) -> dict:
         """Dictionary. Model train meta data."""
@@ -140,7 +140,7 @@ class RunDataEntity(object):
         if self._strict_return:
             return strict_prop_return(prop, dict)
         return dict
-        
+
     @property
     def get_python_function(self) -> dict:
         """Dictionary. Python function which model trained."""
@@ -148,7 +148,7 @@ class RunDataEntity(object):
         if self._strict_return:
             return strict_prop_return(prop, dict)
         return dict
-    
+
     @property
     def get_artifacts(self) -> dict:
         """Dictionary. Saved Artifacts of run."""
@@ -156,43 +156,43 @@ class RunDataEntity(object):
         if self._strict_return:
             return strict_prop_return(prop, dict)
         return prop
-    
+
     @property
     def get_model_path_and_uri(self) -> dict:
         """String. Path of model and URI."""
         if not isinstance(self._path_name, str):
             raise TypeError(
                 f"For using {RunDataEntity.get_model_path_and_uri.fget.__name__} getter you have to define path_name type as str"
-                )
+            )
         prop = self.get_artifacts.get(self._path_name)
         if self._strict_return:
             return strict_prop_return(prop, dict)
         return prop
-            
+
     @property
     def get_model_path(self) -> str:
         """String. Path of model."""
         if not isinstance(self._path_name, str):
             raise TypeError(
                 f"For using {RunDataEntity.get_model_path.fget.__name__} getter you have to define path_name type as str"
-                )
+            )
         prop = self.get_artifacts.get(self._path_name).get("path")
         if self._strict_return:
             return strict_prop_return(prop, str)
         return prop
-    
+
     @property
     def get_model_uri(self) -> str:
         """String. URI of model."""
         if not isinstance(self._path_name, str):
             raise TypeError(
                 f"For using {RunDataEntity.get_model_uri.fget.__name__} getter you have to define path_name type as str"
-                )
+            )
         prop = self.get_artifacts.get(self._path_name).get("uri")
         if self._strict_return:
             return strict_prop_return(prop, str)
         return prop
-    
+
     @property
     def get_loader_module(self):
         """String. Mlflow loader module of model."""
@@ -200,7 +200,7 @@ class RunDataEntity(object):
         if self._strict_return:
             return strict_prop_return(prop, str)
         return prop
-    
+
     @property
     def get_python_version(self) -> str:
         """String. Python version of run."""
@@ -208,7 +208,7 @@ class RunDataEntity(object):
         if self._strict_return:
             return strict_prop_return(prop, str)
         return prop
-    
+
     @property
     def get_code(self) -> str:
         """String. Code of model."""
@@ -216,7 +216,7 @@ class RunDataEntity(object):
         if self._strict_return:
             return strict_prop_return(prop, str)
         return prop
-    
+
     @property
     def get_model_env(self) -> dict:
         """Dictionary. Model Enviroment yaml files."""
@@ -224,7 +224,7 @@ class RunDataEntity(object):
         if self._strict_return:
             return strict_prop_return(prop, dict)
         return prop
-    
+
     @property
     def get_conda_env(self) -> str:
         """String. Conda environment yaml file of run"""
@@ -232,7 +232,7 @@ class RunDataEntity(object):
         if self._strict_return:
             return strict_prop_return(prop, str)
         return prop
-    
+
     @property
     def get_virtual_env(self) -> str:
         """String. Virtual environment yaml file of run"""
@@ -240,7 +240,7 @@ class RunDataEntity(object):
         if self._strict_return:
             return strict_prop_return(prop, str)
         return prop
-    
+
     @property
     def get_model_uuid(self) -> str:
         """String. Model uuid regarding to run."""
@@ -248,7 +248,7 @@ class RunDataEntity(object):
         if self._strict_return:
             return strict_prop_return(prop, str)
         return prop
-    
+
     @property
     def get_mlflow_version(self) -> str:
         """String. Mlflow version of run."""
