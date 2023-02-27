@@ -1,6 +1,5 @@
 "Mlflow MVC Experiment Entity Module"
 
-from typing import List
 import json
 from mlflow.entities.experiment import Experiment
 

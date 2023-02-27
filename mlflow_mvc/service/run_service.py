@@ -12,7 +12,6 @@ from .interface.i_run_service import IRunService
 from ..repository.experiment_repository import ExperimentRepository
 from ..repository.run_repository import RunRepository
 from ..entities.run_data_entity import RunDataEntity
-from ..entities.run_info_entity import RunInfoEntity
 from ..util.master_logger import MasterLogger
 
 # Global logger settings
@@ -31,7 +30,7 @@ class RunService(implements(IRunService)):
 
     def select_best_run_by_metric(
             self,
-            runs: PagedList[List],
+            runs: PagedList[Run],
             selected_metric: str
     ) -> Run:
         """Loop over runs and selects best run based on selected metric.
@@ -47,7 +46,7 @@ class RunService(implements(IRunService)):
         best_run = None
         for run in runs:
             if selected_metric in run.data.metrics:
-                if (accuracy_high == None or run.data.metrics[selected_metric] > accuracy_high):
+                if (accuracy_high is None or run.data.metrics[selected_metric] > accuracy_high):
                     accuracy_high = run.data.metrics[selected_metric]
                     best_run = run
             else:
@@ -80,7 +79,7 @@ class RunService(implements(IRunService)):
         # Parametrizing the right experiment path using widgets
         experiments = self._experiment_repository.find_all_experiments_as_paged_list()
         if experiments is None:
-            logger.error(f"No experiment Found!")
+            logger.error("No experiment Found!")
             raise ValueError("Experiments returns as None type. No experience has recorded.")
         print(experiments)
 
@@ -100,7 +99,7 @@ class RunService(implements(IRunService)):
         model_uri = "runs:/" + best_run_id + "/model"
         logger.info(model_uri)
         best_run_data_entity = RunDataEntity(best_run)
-        best_run_info_entity = RunInfoEntity(best_run)
+        # best_run_info_entity = RunInfoEntity(best_run)
         logger.info(f"Best Run Creation time in UTC: {best_run_data_entity.get_utc_time_created}")
         return best_run
 

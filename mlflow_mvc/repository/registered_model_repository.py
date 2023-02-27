@@ -4,8 +4,8 @@ from typing import List
 from dependency_injector.wiring import inject
 import mlflow
 from mlflow.tracking.client import MlflowClient
-from mlflow.entities.model_registry import RegisteredModel
 
+from ..entities.registered_model_entity import RegisteredModelEntity
 from ..util.generic_transformers import generic_multi_transformer
 
 
@@ -21,5 +21,6 @@ class RegisteredModelRepository(MlflowClient):
         all_registered_models = self.search_registered_models()
         return generic_multi_transformer(all_registered_models)
 
-    def find_registered_model_by_name(self, name: str) -> RegisteredModel:
-        return self.get_registered_model(name)
+    def find_registered_model_by_name(self, name: str) -> RegisteredModelEntity:
+        registered_model = self.get_registered_model(name)
+        return RegisteredModelEntity(registered_model)

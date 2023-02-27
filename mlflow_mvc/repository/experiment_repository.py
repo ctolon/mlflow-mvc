@@ -1,6 +1,6 @@
 "Mlflow MVC Experiment Repository Module"
 
-from typing import Optional, List
+from typing import List
 from dependency_injector.wiring import inject
 import mlflow
 from mlflow.entities.experiment import Experiment
@@ -9,6 +9,7 @@ from mlflow.store.entities import PagedList
 from mlflow.tracking.client import MlflowClient
 
 from ..util.generic_transformers import generic_multi_transformer
+from ..entities.experiment_entity import ExperimentEntity
 
 
 class ExperimentRepository(MlflowClient):
@@ -36,8 +37,10 @@ class ExperimentRepository(MlflowClient):
         all_experiment_names = [x.name for x in all_experiments]
         return all_experiment_names
 
-    def find_experiment_by_id(self, experiment_id: str) -> Experiment:
-        return self.get_experiment(experiment_id)
+    def find_experiment_by_id(self, experiment_id: str) -> ExperimentEntity:
+        experiment_by_id = self.get_experiment(experiment_id)
+        return ExperimentEntity(experiment_by_id)
 
-    def find_experiment_by_name(self, name: str) -> Experiment:
-        return self.get_experiment_by_name(name=name)
+    def find_experiment_by_name(self, name: str) -> ExperimentEntity:
+        experiment_by_name = self.get_experiment_by_name(name=name)
+        return ExperimentEntity(experiment_by_name)

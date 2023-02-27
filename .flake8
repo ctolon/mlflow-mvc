@@ -1,0 +1,11 @@
+[flake8]
+extend-ignore = E501, C901, E203, E251, W293, E261, E265, E116
+max-line-length = 120
+exclude =
+    .git,
+    __pycache__,
+    docs/source/conf.py,
+    old,
+    build,
+    dist
+max-complexity = 10

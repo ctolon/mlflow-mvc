@@ -4,14 +4,12 @@ import pathlib
 from pathlib import Path
 from typing import List
 import requests
-from mlflow.store.entities.paged_list import PagedList
 from mlflow.entities.metric import Metric
 from interface import implements
 from dependency_injector.wiring import inject
 
 from .interface.i_model_version_service import IModelVersionService
 from ..config.core import Config, ApiPath
-from ..entities.run_data_entity import RunDataEntity
 from ..repository.model_version_repository import ModelVersionRepository
 from ..repository.run_repository import RunRepository
 from ..util.master_logger import MasterLogger
@@ -46,14 +44,13 @@ class ModelVersionService(implements(IModelVersionService)):
         logger.info("latest model is fetching now..")
         latest_model_version = self._model_version_repository.find_latest_model_version_by_model_name(
             model_name)
-        run_uuid = latest_model_version.run_id
-        model_version = latest_model_version.version
+        run_uuid = latest_model_version.get_run_id
+        model_version = latest_model_version.get_version
         logger.info(f"Model run id : {run_uuid}")
         logger.info(f"Model version : {model_version}")
 
         # Get Model Run by Run Id
-        model = self._run_repository.get_run(run_id=run_uuid)
-        run_data_model = RunDataEntity(model, model_path, strict_return=True)
+        run_data_model = self._run_repository.find_run_data_by_run_id(run_id=run_uuid)
 
         # Get model path and uri with repository methods
         model_path = run_data_model.get_model_path
@@ -86,7 +83,7 @@ class ModelVersionService(implements(IModelVersionService)):
         logger.info(f"{model_name} download success!")
 
     def latest_model_validator(self, model_name: str, criteria: str, selected_metric: str) -> bool:
-        """Fetch Latest model and validate based on selected metric criteria. 
+        """Fetch Latest model and validate based on selected metric criteria.
 
         Args:
             model_name (str): Name of model.
@@ -103,17 +100,17 @@ class ModelVersionService(implements(IModelVersionService)):
         latest_model_version = self._model_version_repository.find_latest_model_version_by_model_name(model_name)
 
         # Log model properties
-        logger.info(f"Registered Model Name: {latest_model_version.name}")
-        logger.info(f"Registered Model Description: {latest_model_version.description}")
-        logger.info(f"Registered Model Run id: {latest_model_version.run_id}")
-        logger.info(f"Registered Model Creation Timestamp: {latest_model_version.creation_timestamp}")
-        logger.info(f"Registered Model Version: {latest_model_version.version}")
-        logger.info(f"Registered Model Tags: {latest_model_version.tags}")
-        logger.info(f"Registered Model Stage: {latest_model_version.current_stage}")
+        logger.info(f"Registered Model Name: {latest_model_version.get_name}")
+        logger.info(f"Registered Model Description: {latest_model_version.get_description}")
+        logger.info(f"Registered Model Run id: {latest_model_version.get_run_id}")
+        logger.info(f"Registered Model Creation Timestamp: {latest_model_version.get_creation_timestamp}")
+        logger.info(f"Registered Model Version: {latest_model_version.get_version}")
+        logger.info(f"Registered Model Tags: {latest_model_version.get_tags}")
+        logger.info(f"Registered Model Stage: {latest_model_version.get_current_stage}")
         # logger.info(f"Registered Model Source: {latest_model_version.source}")
 
         # Get Model Metrics for latest run with transformers due to datatype issues
-        model_metric: List[Metric] = self._run_repository.get_metric_history(latest_model_version.run_id,
+        model_metric: List[Metric] = self._run_repository.get_metric_history(latest_model_version.get_run_id,
                                                                              selected_metric)
 
         metric_dict = dict((x, y) for x, y in tuple(model_metric[0]))

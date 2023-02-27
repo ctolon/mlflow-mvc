@@ -13,7 +13,7 @@ class RunInfoEntity(object):
         self._run = dict(run.info)
         self._strict_return = strict_return
 
-    # Getters    
+    # Getters
     @property
     def get_run_uuid(self) -> str:
         prop = self._run.get("run_uuid")
