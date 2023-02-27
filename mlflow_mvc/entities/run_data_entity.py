@@ -2,7 +2,6 @@
 
 from mlflow.entities import Run
 import json
-from typing import Optional
 
 from ..util.type_safety import strict_prop_return, entity_type_check
 
@@ -10,10 +9,9 @@ from ..util.type_safety import strict_prop_return, entity_type_check
 class RunDataEntity(object):
     """Mlflow MVC Entity Class for Run.data"""
 
-    def __init__(self, run: Run, path_name: Optional[str] = None, strict_return: bool = True):
+    def __init__(self, run: Run, strict_return: bool = True):
         entity_type_check(run, Run)
         self._run = dict(run.data)
-        self._path_name = path_name
         self._strict_return = strict_return
 
     # Getters
@@ -155,42 +153,6 @@ class RunDataEntity(object):
         prop = self.get_python_function.get("artifacts")
         if self._strict_return:
             return strict_prop_return(prop, dict)
-        return prop
-
-    @property
-    def get_model_path_and_uri(self) -> dict:
-        """String. Path of model and URI."""
-        if not isinstance(self._path_name, str):
-            raise TypeError(
-                f"For using {RunDataEntity.get_model_path_and_uri.fget.__name__} getter you have to define path_name type as str"
-            )
-        prop = self.get_artifacts.get(self._path_name)
-        if self._strict_return:
-            return strict_prop_return(prop, dict)
-        return prop
-
-    @property
-    def get_model_path(self) -> str:
-        """String. Path of model."""
-        if not isinstance(self._path_name, str):
-            raise TypeError(
-                f"For using {RunDataEntity.get_model_path.fget.__name__} getter you have to define path_name type as str"
-            )
-        prop = self.get_artifacts.get(self._path_name).get("path")
-        if self._strict_return:
-            return strict_prop_return(prop, str)
-        return prop
-
-    @property
-    def get_model_uri(self) -> str:
-        """String. URI of model."""
-        if not isinstance(self._path_name, str):
-            raise TypeError(
-                f"For using {RunDataEntity.get_model_uri.fget.__name__} getter you have to define path_name type as str"
-            )
-        prop = self.get_artifacts.get(self._path_name).get("uri")
-        if self._strict_return:
-            return strict_prop_return(prop, str)
         return prop
 
     @property

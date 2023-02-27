@@ -10,6 +10,7 @@ from dependency_injector.wiring import inject
 
 from .interface.i_model_version_service import IModelVersionService
 from ..config.core import Config, ApiPath
+from ..entities.run_data_entity import RunDataEntity
 from ..repository.model_version_repository import ModelVersionRepository
 from ..repository.run_repository import RunRepository
 from ..util.master_logger import MasterLogger
@@ -25,6 +26,21 @@ class ModelVersionService(implements(IModelVersionService)):
     def __init__(self, run_repository: RunRepository, model_version_repository: ModelVersionRepository):
         self._run_repository = run_repository
         self._model_version_repository = model_version_repository
+        
+    def retrive_model_path_and_uri(self, run_data_entity: RunDataEntity, path_name: str):
+        """Retrive model path and uri by path name.
+
+        Args:
+            run_data_entity (RunDataEntity): RunDataEntity
+            path_name (str): model path name (ex. fasttext_model_path)
+
+        Returns:
+            str, str: model path and model URI as string.
+        """
+        model_path: str = run_data_entity.get_artifacts.get(path_name).get("path")
+        model_uri: str = run_data_entity.get_artifacts.get(path_name).get("uri")
+        
+        return model_path, model_uri
 
     def download_latest_model(self, model_name: str, model_path: str, model_format: str = ".bin"):
         """Download Latest Model from Mlflow Artifact Server.
@@ -53,8 +69,7 @@ class ModelVersionService(implements(IModelVersionService)):
         run_data_model = self._run_repository.find_run_data_by_run_id(run_id=run_uuid)
 
         # Get model path and uri with repository methods
-        model_path = run_data_model.get_model_path
-        model_uri = run_data_model.get_model_uri
+        model_path, model_uri = self.retrive_model_path_and_uri(run_data_model, "fasttext_model_path")
         print(run_data_model.get_flavors)
 
         path_to_download = f"{model_uri}/{model_path}"
