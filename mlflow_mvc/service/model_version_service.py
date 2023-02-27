@@ -3,7 +3,7 @@
 import pathlib
 from pathlib import Path
 import os
-from typing import List, Optional
+from typing import List, Optional, Union
 import requests
 from mlflow.entities.metric import Metric
 from interface import implements
@@ -27,6 +27,24 @@ class ModelVersionService(implements(IModelVersionService)):
     def __init__(self, run_repository: RunRepository, model_version_repository: ModelVersionRepository):
         self._run_repository = run_repository
         self._model_version_repository = model_version_repository
+
+    def pathdir_creator(self, output_dir: str) -> Union[Path, str]:
+        """This function allows to create directory if not exist.
+
+        Args:
+            output_dir (str): Path to output directory. If not current path, it will automatically convert to 'Path'
+
+        Returns:
+            Path | str: Abs path of directory.
+        """
+        # Create output_dir if not exist
+        if output_dir != os.getcwd():
+            pathlib.Path(output_dir).mkdir(parents=True, exist_ok=True)
+            output_dir: Path = pathlib.Path(output_dir)
+            logger.info(output_dir.resolve())
+        else:
+            logger.info(f"Output Directory : {output_dir}")
+        return output_dir
 
     def retrive_model_path_and_uri(self, run_data_entity: RunDataEntity, model_path_name: str):
         """Retrive model path and uri by path name.
@@ -78,7 +96,6 @@ class ModelVersionService(implements(IModelVersionService)):
 
         path_to_download = f"{model_uri}/{model_path}"
         logger.info(f"Path to download: {path_to_download}")
-        logger.info(f"Output Directory : {output_dir}")
 
         # Get tracking server URI from Generic CRUD repository
         tracking_server_url = self._model_version_repository.tracking_uri
@@ -86,14 +103,8 @@ class ModelVersionService(implements(IModelVersionService)):
         # Base URL With GET_ARTIFACT Endpoint
         base_url = f"{tracking_server_url}{ApiPath.GET_ARTIFACT}"
         
-        # Create output dir if not exist
-        # TODO change with Path
-        if output_dir != os.getcwd():
-            output_dir = os.getcwd() + "/" + output_dir.strip()
-        isExist = os.path.exists(output_dir)
-        if not isExist:
-            os.makedirs(output_dir)
-
+        # Create output_dir if not exist
+        output_dir = self.pathdir_creator(output_dir)
         # Send HTTP Params as JSON
         params = {
             "path": path_to_download,
