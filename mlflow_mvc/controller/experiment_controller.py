@@ -1,6 +1,6 @@
 """Mlflow MVC Experiment Controller Module"""
 
-from dependency_injector.wiring import inject, Provide
+from dependency_injector.wiring import inject
 from typing import List
 
 from ..service.experiment_service import ExperimentService

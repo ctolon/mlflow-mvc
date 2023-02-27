@@ -1,7 +1,7 @@
 """Mlflow MVC Run Controller Module"""
 
 from typing import Optional
-from dependency_injector.wiring import Provide, inject
+from dependency_injector.wiring import inject
 
 from ..service.run_service import RunService
 

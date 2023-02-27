@@ -3,6 +3,7 @@
 from typing import Type, Any
 from mlflow_mvc.util.exceptions import PropertyNotFoundError
 
+
 class _MetaConst(type):
     """Meta Const Class"""
     
@@ -22,7 +23,7 @@ class Const(object, metaclass=_MetaConst):
       PI = 3.14
       RED = "red"
           
-    >> People.PI    
+    >> People.PI   
     """
     
     def __getattr__(self, name):
@@ -30,7 +31,8 @@ class Const(object, metaclass=_MetaConst):
 
     def __setattr__(self, name, value):
         raise TypeError
-    
+
+
 def strict_prop_return(prop: Any , expected_type: Type) -> Any:
     """This function allows to static type checking for Entity properties
 
@@ -54,6 +56,7 @@ def strict_prop_return(prop: Any , expected_type: Type) -> Any:
         raise TypeError(f"Expected Type: {expected_type} === Return Type: {prop_type}")
     return prop
 
+
 def entity_type_check(entity_type_actual: Any, entity_type_expected: Any) -> None:
     """Static entity type checker on instance
 
@@ -65,5 +68,5 @@ def entity_type_check(entity_type_actual: Any, entity_type_expected: Any) -> Non
         TypeError: If Entity type is wrong
     """
     
-    if not isinstance (type(entity_type_actual), type(entity_type_expected)):
+    if not isinstance(type(entity_type_actual), type(entity_type_expected)):
         raise TypeError(f"Wrong Type for Run Entity. Expected: {type(entity_type_expected)} == Provided: {type(entity_type_actual)}") 

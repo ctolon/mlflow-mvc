@@ -3,6 +3,7 @@
 from interface import Interface
 from typing import List
 
+
 class IRegisteredModelService(Interface):
     """Mlflow MVC Registered Models Service Interface Class"""
 

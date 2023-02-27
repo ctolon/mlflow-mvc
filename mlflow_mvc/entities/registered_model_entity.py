@@ -15,6 +15,9 @@ class RegisteredModelEntity(object):
         entity_type_check(registered_model, RegisteredModel)
         self._registered_model = registered_model
         self._strict_return = strict_return
+        
+    def __str__(self):
+        return json.dumps(dict(self._registered_model))
 
     @property
     def get_name(self) -> str:

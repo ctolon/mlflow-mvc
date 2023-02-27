@@ -2,7 +2,8 @@
 
 import pathlib
 from pathlib import Path
-from typing import List
+import os
+from typing import List, Optional
 import requests
 from mlflow.entities.metric import Metric
 from interface import implements
@@ -26,8 +27,8 @@ class ModelVersionService(implements(IModelVersionService)):
     def __init__(self, run_repository: RunRepository, model_version_repository: ModelVersionRepository):
         self._run_repository = run_repository
         self._model_version_repository = model_version_repository
-        
-    def retrive_model_path_and_uri(self, run_data_entity: RunDataEntity, path_name: str):
+
+    def retrive_model_path_and_uri(self, run_data_entity: RunDataEntity, model_path_name: str):
         """Retrive model path and uri by path name.
 
         Args:
@@ -37,17 +38,20 @@ class ModelVersionService(implements(IModelVersionService)):
         Returns:
             str, str: model path and model URI as string.
         """
-        model_path: str = run_data_entity.get_artifacts.get(path_name).get("path")
-        model_uri: str = run_data_entity.get_artifacts.get(path_name).get("uri")
-        
+        model_path: str = run_data_entity.get_artifacts.get(model_path_name).get("path")
+        model_uri: str = run_data_entity.get_artifacts.get(model_path_name).get("uri")
+
         return model_path, model_uri
 
-    def download_latest_model(self, model_name: str, model_path: str, model_format: str = ".bin"):
+    def download_latest_model(
+            self, model_name: str, model_path_name: str, output_dir: str = os.getcwd(), model_format: str = ".bin"
+            ):
         """Download Latest Model from Mlflow Artifact Server.
 
         Args:
             model_name (str): Model Name.
             model_path (str): Model Path as a Key.
+            output_dir (str): Output directory for save model.
             model_format (str, optional): Model format. Defaults to ".bin".
         """
 
@@ -69,18 +73,16 @@ class ModelVersionService(implements(IModelVersionService)):
         run_data_model = self._run_repository.find_run_data_by_run_id(run_id=run_uuid)
 
         # Get model path and uri with repository methods
-        model_path, model_uri = self.retrive_model_path_and_uri(run_data_model, "fasttext_model_path")
+        model_path, model_uri = self.retrive_model_path_and_uri(run_data_model, model_path_name)
         print(run_data_model.get_flavors)
 
         path_to_download = f"{model_uri}/{model_path}"
         logger.info(f"Path to download: {path_to_download}")
-
-        output_dir = pathlib.Path(__file__).resolve().parent  # Current path
         logger.info(f"Output Directory : {output_dir}")
 
         tracking_server_url = Config.get("TRACKING_SERVER_URI")
 
-        base_url = f"{tracking_server_url}{ApiPath.GET_ARTIFACT_PATH}"
+        base_url = f"{tracking_server_url}{ApiPath.GET_ARTIFACT}"
 
         # Send HTTP Params as JSON
         params = {
@@ -93,7 +95,7 @@ class ModelVersionService(implements(IModelVersionService)):
 
         # Send GET Request and retrieve model from MLflow Artifact server
         r = requests.get(url=base_url, params=params)
-        open(f'{model_name}{model_format}', 'wb').write(r.content)
+        open(f'{output_dir}/{model_name}{model_format}', 'wb').write(r.content)
 
         logger.info(f"{model_name} download success!")
 

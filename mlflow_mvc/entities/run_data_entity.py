@@ -13,6 +13,9 @@ class RunDataEntity(object):
         entity_type_check(run, Run)
         self._run = dict(run.data)
         self._strict_return = strict_return
+        
+    def __str__(self):
+        return json.dumps(dict(self._run))
 
     # Getters
     @property

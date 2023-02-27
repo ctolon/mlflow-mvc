@@ -31,4 +31,4 @@ class Config:
 class ApiPath(Const):
     """RestAPI End-points in Mlflow Core Framework"""
 
-    GET_ARTIFACT_PATH = "/get-artifact"
+    GET_ARTIFACT = "/get-artifact"

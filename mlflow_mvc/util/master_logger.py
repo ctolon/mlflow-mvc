@@ -4,6 +4,7 @@ import logging
 from logging import RootLogger
 from mlflow_mvc.util.decorators import setter_onlyf
 
+
 class MasterLogger(object):
     """Main class for logging mlflow-mvc as standard"""
 

@@ -1,6 +1,7 @@
 "Mlflow MVC Run-Info Entity Module"
 
 from mlflow.entities import Run
+import json
 
 from ..util.type_safety import strict_prop_return, entity_type_check
 
@@ -12,6 +13,9 @@ class RunInfoEntity(object):
         entity_type_check(run, Run)
         self._run = dict(run.info)
         self._strict_return = strict_return
+        
+    def __str__(self):
+        return json.dumps(dict(self._run))
 
     # Getters
     @property

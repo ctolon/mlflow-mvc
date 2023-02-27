@@ -1,6 +1,6 @@
 """Endpoints module."""
 
-from fastapi import APIRouter, Depends, Response, status
+from fastapi import APIRouter, Depends
 from dependency_injector.wiring import inject, Provide
 
 from .fast_api_container import FastAPIContainer

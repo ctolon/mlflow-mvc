@@ -13,6 +13,9 @@ class ModelVersionEntity(object):
         entity_type_check(model_version, ModelVersion)
         self._model_version = model_version
         self._strict_return = strict_return
+        
+    def __str__(self):
+        return json.dumps(dict(self._model_version))
 
     # Getters
     @property

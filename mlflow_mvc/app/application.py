@@ -3,7 +3,7 @@
 from fastapi import FastAPI
 
 from . import fast_api_container
-from . import experiment_endpoint  # must be strong
+from . import experiment_endpoint
 from . import model_version_endpoint
 from . import registered_model_endpoint
 from . import run_endpoint

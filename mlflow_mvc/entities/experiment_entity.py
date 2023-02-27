@@ -13,6 +13,9 @@ class ExperimentEntity(object):
         entity_type_check(experiment, Experiment)
         self._experiment = experiment
         self._strict_return = strict_return
+        
+    def __str__(self):
+        return json.dumps(dict(self._experiment))
 
     # Getters
     @property
