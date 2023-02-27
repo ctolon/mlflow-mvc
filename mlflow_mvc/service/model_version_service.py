@@ -80,9 +80,19 @@ class ModelVersionService(implements(IModelVersionService)):
         logger.info(f"Path to download: {path_to_download}")
         logger.info(f"Output Directory : {output_dir}")
 
-        tracking_server_url = Config.get("TRACKING_SERVER_URI")
+        # Get tracking server URI from Generic CRUD repository
+        tracking_server_url = self._model_version_repository.tracking_uri
 
+        # Base URL With GET_ARTIFACT Endpoint
         base_url = f"{tracking_server_url}{ApiPath.GET_ARTIFACT}"
+        
+        # Create output dir if not exist
+        # TODO change with Path
+        if output_dir != os.getcwd():
+            output_dir = os.getcwd() + "/" + output_dir.strip()
+        isExist = os.path.exists(output_dir)
+        if not isExist:
+            os.makedirs(output_dir)
 
         # Send HTTP Params as JSON
         params = {
