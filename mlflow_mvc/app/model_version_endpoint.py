@@ -35,6 +35,18 @@ def download_latest_model(
         model_path=body.model_path,
         model_format=body.model_format
     )
+    
+@router.post("/model-versions/download-by-run-uuid")
+@inject
+def download_latest_model(
+        body: DownloadLatestModelBody,
+        model_version_ctrl=Depends(Provide[FastAPIContainer.model_version_controller]),
+):
+    return model_version_ctrl.download_latest_model(
+        model_name=body.model_name,
+        model_path=body.model_path,
+        model_format=body.model_format
+    )
 
 
 @router.get("/status")

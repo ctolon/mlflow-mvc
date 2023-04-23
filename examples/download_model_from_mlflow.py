@@ -1,8 +1,9 @@
-"""CLI Script for download latest model by name"""
+"""Example CLI Script preparation with DI for latest download model."""
 import argparse
 import yaml
-import os
 from dependency_injector.wiring import inject, Provide
+import os
+
 from mlflow_mvc.containers.model_version_container import ModelVersionContainer, ModelVersionController
 from mlflow_mvc.config.core import Config
 

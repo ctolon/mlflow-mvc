@@ -3,14 +3,14 @@
 import pathlib
 from pathlib import Path
 import os
-from typing import List, Optional, Union
+from typing import List, Union
 import requests
 from mlflow.entities.metric import Metric
 from interface import implements
 from dependency_injector.wiring import inject
 
 from .interface.i_model_version_service import IModelVersionService
-from ..config.core import Config, ApiPath
+from ..config.core import ApiPath
 from ..entities.run_data_entity import RunDataEntity
 from ..repository.model_version_repository import ModelVersionRepository
 from ..repository.run_repository import RunRepository
@@ -28,7 +28,7 @@ class ModelVersionService(implements(IModelVersionService)):
         self._run_repository = run_repository
         self._model_version_repository = model_version_repository
 
-    def pathdir_creator(self, output_dir: str) -> Union[Path, str]:
+    def _pathdir_creator(self, output_dir: str) -> Union[str, Path]:
         """This function allows to create directory if not exist.
 
         Args:
@@ -46,7 +46,7 @@ class ModelVersionService(implements(IModelVersionService)):
             logger.info(f"Output Directory : {output_dir}")
         return output_dir
 
-    def retrive_model_path_and_uri(self, run_data_entity: RunDataEntity, model_path_name: str):
+    def _retrive_model_path_and_uri(self, run_data_entity: RunDataEntity, model_path_name: str):
         """Retrive model path and uri by path name.
 
         Args:
@@ -91,7 +91,7 @@ class ModelVersionService(implements(IModelVersionService)):
         run_data_model = self._run_repository.find_run_data_by_run_id(run_id=run_uuid)
 
         # Get model path and uri with repository methods
-        model_path, model_uri = self.retrive_model_path_and_uri(run_data_model, model_path_name)
+        model_path, model_uri = self._retrive_model_path_and_uri(run_data_model, model_path_name)
         print(run_data_model.get_flavors)
 
         path_to_download = f"{model_uri}/{model_path}"
@@ -104,7 +104,63 @@ class ModelVersionService(implements(IModelVersionService)):
         base_url = f"{tracking_server_url}{ApiPath.GET_ARTIFACT}"
         
         # Create output_dir if not exist
-        output_dir = self.pathdir_creator(output_dir)
+        output_dir = self._pathdir_creator(output_dir)
+        # Send HTTP Params as JSON
+        params = {
+            "path": path_to_download,
+            "run_uuid": run_uuid
+        }
+
+        logger.info(
+            f"GET Request to -> {base_url}?path={path_to_download}&run_uuid={run_uuid}, params: {params.items()}")
+
+        # Send GET Request and retrieve model from MLflow Artifact server
+        r = requests.get(url=base_url, params=params)
+        open(f'{output_dir}/{model_name}{model_format}', 'wb').write(r.content)
+
+        logger.info(f"{model_name} download success!")
+        
+    def download_model_by_run_uuid(
+            self, run_uuid: str, model_path_name: str, output_dir: Union[str, Path] = os.getcwd()
+            ):
+        """Download Model by run id from Mlflow Artifact Server.
+
+        Args:
+            run_uuid (str): Run uuid of model.
+            model_path (str): Model Path as a Key.
+            output_dir (str): Output directory for save model.
+        """
+
+        logger.info(Path(__file__).name + " execution start..")
+
+        # Get Model Run by Run Id
+        run_data_model = self._run_repository.find_run_data_by_run_id(run_id=run_uuid)
+        
+        # Get model path and uri with repository methods
+        model_path, model_uri = self._retrive_model_path_and_uri(run_data_model, model_path_name)
+        print(run_data_model.get_flavors)
+        
+        # Retrieve model name and format
+        model_name_with_format = model_path.split("/")[-1]
+        model_name = model_name_with_format.split(".")[0]
+        model_format = f".{model_name_with_format.split('.')[1]}"
+        logger.info(f"Model Name: {model_name}")
+        logger.info(f"Model Format: {model_format}")
+        
+        if model_format.startswith(".") is False:
+            raise TypeError("Model Format parameter must be started with .")
+
+        path_to_download = f"{model_uri}/{model_path}"
+        logger.info(f"Path to download: {path_to_download}")
+
+        # Get tracking server URI from Generic CRUD repository
+        tracking_server_url = self._model_version_repository.tracking_uri
+
+        # Base URL With GET_ARTIFACT Endpoint
+        base_url = f"{tracking_server_url}{ApiPath.GET_ARTIFACT}"
+        
+        # Create output_dir if not exist
+        output_dir = self._pathdir_creator(output_dir)
         # Send HTTP Params as JSON
         params = {
             "path": path_to_download,
